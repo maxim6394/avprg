@@ -5,19 +5,39 @@ from shapeDetector import ShapeType
 import winsound
 
 class ImageProcessing:
-               
+
+    redHSVThresholds = ((0,180, 150), (10, 255, 255), (170, 180, 150), (180, 255, 255))
+    greenHSVThresholds = ((45, 130, 50), (70, 255, 255))
+    blackValueThreshold = 40
 
     def __init__(self, xSegments = 6):
-
         self.xSegments = xSegments
         self.currentSegment = 0
         self.currentX = 0        
 
+    def resetOutputImage(self):
+        self.outputImage = np.copy(self.image)
+
     def processImage(self, image):
-        self.image = np.copy(image)        
+        ip = ImageProcessing
+        self.image = np.copy(image)
+        self.resetOutputImage()
         self.width = self.image.shape[:2][1]
         self.height = self.image.shape[:2][0]
+        
+        h,s,v = cv2.split(cv2.cvtColor(image, cv2.COLOR_BGR2HSV))
+        redHMask = cv2.inRange(h, ip.redHSVThresholds[0][0], ip.redHSVThresholds[1][0])
+        redHMask2 = cv2.inRange(h, ip.redHSVThresholds[2][0], ip.redHSVThresholds[3][0])
+        redSMask = cv2.inRange(s, ip.redHSVThresholds[0][1], ip.redHSVThresholds[1][1])        
+        
+        greenHMask = cv2.inRange(h, ip.greenHSVThresholds[0][0], ip.greenHSVThresholds[1][0])
+        greenSMask = cv2.inRange(s, ip.greenHSVThresholds[0][1], ip.greenHSVThresholds[1][1])
 
+        self.redMask = cv2.bitwise_and(redHMask, redSMask) + cv2.bitwise_and(redHMask2, redSMask)
+        self.greenMask = cv2.bitwise_and(greenHMask, greenSMask)
+        self.blackMask = cv2.inRange(v, 0, ip.blackValueThreshold)        
+
+        
         self.shapes = []
 
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(3,3))
@@ -64,15 +84,15 @@ class ImageProcessing:
 
     def drawGrid(self):                
         for x in range(self.topLeft[0], self.bottomRight[0], self.cellWidth):
-            cv2.line(self.image, (x, self.topLeft[1]), (x, self.bottomRight[1]), (0))
+            cv2.line(self.outputImage, (x, self.topLeft[1]), (x, self.bottomRight[1]), (0))
         for y in range(self.topLeft[1], self.bottomRight[1], self.cellHeight):
-            cv2.line(self.image, (self.topLeft[0], y), (self.bottomRight[0], y), (0))    
+            cv2.line(self.outputImage, (self.topLeft[0], y), (self.bottomRight[0], y), (0))    
 
         for shape in self.shapes:
-            shape.draw(self.image)
+            shape.draw(self.outputImage)
             if self.isShapeActive(shape):
-                shape.drawActive(self.image)
-        cv2.line(self.image, (self.currentX, self.topLeft[1]), (self.currentX, self.bottomRight[1]), (0), 3)
+                shape.drawActive(self.outputImage)
+        cv2.line(self.outputImage, (self.currentX, self.topLeft[1]), (self.currentX, self.bottomRight[1]), (0), 3)
     
 
     def isShapeActive(self,shape):
