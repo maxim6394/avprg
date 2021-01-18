@@ -286,7 +286,7 @@ function controlChange(controllerNr, value) {
 
 playStopButton.addEventListener("click", function() {
     if (isPlaying) {
-        //oscillator.stop();
+        oscillator.stop();
         gain.value = 0;
         playStopButton.innerHTML = "Play";
     } else {
