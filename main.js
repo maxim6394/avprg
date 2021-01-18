@@ -16,7 +16,7 @@ let context = new AudioContext();
 
 let oscillator = context.createOscillator();
 oscillator.frequency.value = 1000;
-oscillator.start();
+//oscillator.start();
 
 let gain = context.createGain();
 let stereoPanner = context.createStereoPanner();
@@ -155,25 +155,25 @@ function changeCompressorParameter() {
         case "ratioSlider":
             setBar(this.id, "ratio");
             compressor.ratio.value = (this.value / 5);
-            document.querySelector("#ratioOutput", "compressor").innerHTML = (this.value / 5) + " dB";
+            document.querySelector("#ratioOutput").innerHTML = (this.value / 5) + " dB";
             //document.querySelector("#reductionOutput").innerHTML = compressor.reduction.value;
             break;
         case "kneeSlider":
             setBar(this.id, "knee");
             compressor.knee.value = (this.value / 2.5);
-            document.querySelector("#kneeOutput", "compressor").innerHTML = (this.value / 2.5) + " degree";
+            document.querySelector("#kneeOutput").innerHTML = (this.value / 2.5) + " degree";
             //document.querySelector("#reductionOutput").innerHTML = compressor.reduction.value;
             break;
         case "attackSlider":
             setBar(this.id, "attack");
             compressor.attack.value = (this.value / 1000);
-            document.querySelector("#attackOutput", "compressor").innerHTML = (this.value / 1000) + " sec";
+            document.querySelector("#attackOutput").innerHTML = (this.value / 1000) + " sec";
             //document.querySelector("#reductionOutput").innerHTML = compressor.reduction.value;
             break;
         case "releaseSlider":
             setBar(this.id, "release");
             compressor.release.value = (this.value / 1000);
-            document.querySelector("#releaseOutput", "compressor").innerHTML = (this.value - 100) + " sec";
+            document.querySelector("#releaseOutput").innerHTML = (this.value - 100) + " sec";
             //document.querySelector("#reductionOutput").innerHTML = compressor.reduction.value;
             break;
     }
@@ -224,6 +224,9 @@ for (let i = 0; i < iconButtons.length; i++) {
 }
 
 function loadImpulseResponse(name) {
+    if(name == undefined)
+        name = "room";
+
     fetch("/impulseResponses/" + name + ".wav")
         .then(response => response.arrayBuffer())
         .then(undecodedAudio => context.decodeAudioData(undecodedAudio))
@@ -241,16 +244,15 @@ function loadImpulseResponse(name) {
             stereoPanner.connect(compressor);
             compressor.connect(distortion);
             //filter.connect(distortion);
-            distortion.connect(convoler);
-            convoler.connect(gain);
-            gain.connect(context.destination);
+            distortion.connect(gain);
+            gain.connect(convoler);
+            convoler.connect(context.destination);
         })
         .catch(console.error);
 }
 
 
-function startNote(note) {
-    console.log(allFrequencies[note]);
+function startNote(note) {    
     oscillator.frequency.value = allFrequencies[note];
 }
 
@@ -262,11 +264,14 @@ function stopNote(note) {
 
 playStopButton.addEventListener("click", function() {
     if (isPlaying) {
-        sound.pause();
+        oscillator.stop();
         playStopButton.innerHTML = "Play";
     } else {
+        oscillator = context.createOscillator();
+        oscillator.frequency = 5000;    
+        oscillator.start();
+        loadImpulseResponse();
         playStopButton.innerHTML = "Stop";
-        sound.play();
     }
 
     isPlaying = !isPlaying;

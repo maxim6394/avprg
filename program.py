@@ -19,6 +19,10 @@ def sendNoteOff(note):
     message = mido.Message('note_off', note=note, velocity=127)
     midiOutput.send(message)
 
+def sendControlChange(control, value):
+    message = mido.Message('control_change', control=control, value=value)
+    midiOutput.send(message)
+
 sentOnNotes = []
 
 minFrequency = 500
