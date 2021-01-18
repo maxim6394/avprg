@@ -45,10 +45,7 @@ print("MIDI output ports: ", mido.get_output_names())
 outputName = mido.get_output_names()[0]
 midiOutput = mido.open_output("LoopBe Internal MIDI 1")
 
-
 #exit()
-
-
 
 while True:
 
@@ -72,6 +69,15 @@ while True:
 
     for shape in ip.getActiveShapes():
         ()
+        if shape.shapeType == ShapeType.NONE:
+            sendControlChange(1,3)
+        elif shape.shapeType == ShapeType.CIRCLE:
+            sendControlChange(1,2)
+        elif shape.shapeType == ShapeType.TRIANGLE:
+            sendControlChange(1,4)
+        elif shape.shapeType == ShapeType.RECTANGLE:
+            sendControlChange(1,1)            
+
         note = int(ip.getRelativeShapePosition(shape) * (72-48)) + 48
         sendNoteOn(note)
        # winsound.Beep(int(minFrequency + ip.getRelativeShapePosition(shape) * (maxFrequency - minFrequency)), duration)   

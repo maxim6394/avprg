@@ -19,6 +19,8 @@ oscillator.frequency.value = 1000;
 //oscillator.start();
 
 let gain = context.createGain();
+var prevGain = 1;
+
 let stereoPanner = context.createStereoPanner();
     //let delay = context.createDelay(4.0);
 let convoler = context.createConvolver();
@@ -252,19 +254,40 @@ function loadImpulseResponse(name) {
 }
 
 
-function startNote(note) {    
+function startNote(note) {
     oscillator.frequency.value = allFrequencies[note];
+    gain.value = prevGain;    
 }
 
 function stopNote(note) {
-
+    console.log("stopnote "+note);
+    prevGain = gain.value;
+    gain.value = 0;    
 }
 
+function controlChange(controllerNr, value) {
+    switch(value)     
+    {
+        case 1: 
+            loadImpulseResponse("room");
+            break;
+        case 2:
+            loadImpulseResponse("cave");
+            break;
+        case 3:
+            loadImpulseResponse("garage");
+            break;
+        case 4:
+            loadImpulseResponse("church");
+            break;
+    }
+}
 
 
 playStopButton.addEventListener("click", function() {
     if (isPlaying) {
-        oscillator.stop();
+        //oscillator.stop();
+        gain.value = 0;
         playStopButton.innerHTML = "Play";
     } else {
         oscillator = context.createOscillator();
@@ -276,6 +299,7 @@ playStopButton.addEventListener("click", function() {
 
     isPlaying = !isPlaying;
 }); 
+
 
 var allFrequencies = [
     8.1757989156,       8.6619572180,       9.1770239974,
