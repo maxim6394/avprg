@@ -4,8 +4,9 @@
         <link rel="stylesheet" type="text/css" href="style.css">
         <title>ColorsOfTheShapes</title>
         <style id="rgbStyle"></style>
+        <script src="midi.js"></script>
     </head>
-    <body>
+    <body onload="initialize()">
         <section class="itemWebcam"> 
             <div id="webcamSpace"></div>
         </section>
@@ -100,7 +101,8 @@
             <button id= "playStopButton">Play</button>
         </section>
 
-        <script src="effect.js"></script>
-
+      <!--  <script src="effect.js"></script>-->
+        
+        <label id="midiInput">000</label>
     </body>
 </html>
