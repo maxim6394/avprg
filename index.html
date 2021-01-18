@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <title>ColorsOfTheShapes</title>
+        <style id="rgbStyle"></style>
+    </head>
+    <body>
+        <section class="itemWebcam"> 
+            <div id="webcamSpace"></div>
+        </section>
+
+        <section class="itemCompressor">
+            <div class="sectionTitle" id="compressorTitle"> Compressor </div>
+ 
+                
+                    <div class="sliderTitle" id="thresholdTitle"> Threshold </div> 
+                    <div class="sliderContainer" id="thresholdSliderContainer">
+                        <span class="bar"><span class="fill" id="thresholdFill"></span></span>
+                        <input type="range" min="0" max="100" value="76" class="slider" id="thresholdSlider">
+                    </div>  
+                    <span class="compressorOutput" id="thresholdOutput">-24 dB</span> 
+                
+                
+                    <div class="sliderTitle" id="ratioTitle"> Ratio </div>
+                    <div class="sliderContainer" id="ratioSliderContainer">
+                        <span class="bar"><span class="fill" id="ratioFill"></span></span>  
+                        <input type="range" min="0" max="100" value="60" class="slider" id="ratioSlider">
+                    </div>  
+                    <span class="compressorOutput" id="ratioOutput">12 dB</span> 
+                
+               
+                    <div class="sliderTitle" id="kneeTitle"> Knee </div>
+                    <div class="sliderContainer" id="kneeSliderContainer">
+                        <span class="bar"><span class="fill" id="kneeFill"></span></span>   
+                        <input type="range" min="0" max="100" value="75" class="slider" id="kneeSlider">
+                    </div> 
+                    <span class="compressorOutput" id="kneeOutput">30 degree</span> 
+                
+                
+                    <div class="sliderTitle" id="attackTitle"> Attack </div>
+                    <div class="sliderContainer" id="attackSliderContainer">
+                        <span class="bar"><span class="fill" id="attackFill"></span></span>
+                        <input type="range" min="0" max="100" value="3" class="slider" id="attackSlider">
+                    </div>  
+                    <span class="compressorOutput" id="attackOutput">0.003 sec</span> 
+                
+                
+                    <div class="sliderTitle" id="releaseTitle"> Release </div>
+                    <div class="sliderContainer" id="releaseSliderContainer">
+                        <span class="bar"><span class="fill" id="releaseFill"></span></span> 
+                        <input type="range" min="0" max="100" value="25" class="slider" id="releaseSlider">
+                    </div> 
+                    <span class="compressorOutput" id="releaseOutput">0.25 sec</span> 
+                
+                
+                    <div class="sliderTitle" id="reductionTitle"> Reduction </div>
+                    <span class="compressorOutput" id="reductionOutput">0 dB</span> 
+                
+        </section>
+
+        <section class="itemInstruments"></section>
+
+        <section class="itemReverb">
+            <div class="sectionTitle" id="reverbTitle">Reverb</div>    
+
+            <button class="icon" id= "reverbRoom" ><img src="Icons\Icon_Cave.png" width="64" height="64"></button>
+            <button class="icon" id= "reverbCave"><img src="Icons\Icon_Church.png" width="64" height="64"></button>
+            <button class="icon" id= "reverbChurch"><img src="Icons\Icon_Garage.png" width="64" height="64"></button>
+            <button class="icon" id= "reverbGarage"><img src="Icons\Icon_Room.png" width="64" height="64"></button>
+            <button class="icon" id= "reverbOnOffSwitch"><img src="Icons\Icon_Empty.png" width="64" height="64"></button>    
+        </section>
+
+        <section class="itemGain">
+            <div class="miscTitle" id="gainTitle"> Gain</div>
+            <div class="sliderContainer" id="gainSliderContainer">
+                <span class="bar"><span class="fill" id="gainFill"></span></span> 
+                <input type="range" min="0" max="100" value="10" class="slider" id="gainSlider"> 
+            </div>
+            <span class="miscOutput" id="gainOutput">1.0 dB</span>       
+            
+            <div class="miscTitle" id="panningTitle"> Panning </div>
+            <div class="sliderContainer" id="panningSliderContainer">
+                <span class="bar"><span class="fill" id="panningFill"></span></span> 
+                <input type="range" min="0" max="100" value="50" class="slider" id="panningSlider">  
+            </div>
+            <span class="miscOutput" id="panningOutput">0 LR</span> 
+            
+
+            <div class="miscTitle" id="distortionTitle"> Distortion </div>
+            <div class="sliderContainer" id="distortionSliderContainer">
+                <span class="bar"><span class="fill" id="distortionFill"></span></span>
+                <input type="range" min="0" max="100" value="0" class="slider" id="distortionSlider">  
+            </div>
+            <span class="miscOutput" id="distortionOutput">0</span> 
+            
+        </section>
+
+        <section class="itemPlay">
+            <button id= "playStopButton">Play</button>
+        </section>
+
+        <script src="effect.js"></script>
+
+    </body>
+</html>
