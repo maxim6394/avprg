@@ -1,6 +1,33 @@
+// Hilfsvariablen & HTML Elemente
+
+let playStopButton = document.querySelector("#playStopButton");
+
+let iconButtons = document.querySelectorAll(".icon");
+
 let sliders = document.querySelectorAll(".itemCompressor .slider");
 let miscs = document.querySelectorAll(".itemGain .slider");
 let fills = document.querySelectorAll(".bar .fill");
+
+let isPlaying = false;
+
+// Web Audio Nodes
+
+let context = new AudioContext();
+
+let sound = new Audio("guitar.wav");
+let source = context.createMediaElementSource(sound);
+let gain = context.createGain();
+let stereoPanner = context.createStereoPanner();
+    //let delay = context.createDelay(4.0);
+let convoler = context.createConvolver();
+let compressor = context.createDynamicsCompressor();
+    //let filter = context.createBiquadFilter();
+let distortion = context.createWaveShaper();
+
+// Initialwerte setzen
+distortion.curve = makeDistortionCurve(0);
+distortion.oversample = "4x";
+loadImpulseResponse("room");
 
 let rgb1 = [242, 187, 5];
 let rgb2 = [215, 78, 9];
@@ -119,37 +146,38 @@ function calRGB(array1, array2, percent) {
 function changeCompressorParameter() {
     switch (this.id) {
         case "thresholdSlider":
-            //compressor.threshold.value = (this.value - 100);
+            compressor.threshold.value = (this.value - 100);
             setBar(this.id, "threshold", "compressor");
             document.querySelector("#thresholdOutput").innerHTML = (this.value - 100) + " dB";
             //document.querySelector("#reductionOutput").innerHTML = compressor.reduction.value;
             break;
         case "ratioSlider":
             setBar(this.id, "ratio");
-            //compressor.ratio.value = (this.value / 5);
+            compressor.ratio.value = (this.value / 5);
             document.querySelector("#ratioOutput", "compressor").innerHTML = (this.value / 5) + " dB";
             //document.querySelector("#reductionOutput").innerHTML = compressor.reduction.value;
             break;
         case "kneeSlider":
             setBar(this.id, "knee");
-            //compressor.knee.value = (this.value / 2.5);
+            compressor.knee.value = (this.value / 2.5);
             document.querySelector("#kneeOutput", "compressor").innerHTML = (this.value / 2.5) + " degree";
             //document.querySelector("#reductionOutput").innerHTML = compressor.reduction.value;
             break;
         case "attackSlider":
             setBar(this.id, "attack");
-            //compressor.attack.value = (this.value / 1000);
+            compressor.attack.value = (this.value / 1000);
             document.querySelector("#attackOutput", "compressor").innerHTML = (this.value / 1000) + " sec";
             //document.querySelector("#reductionOutput").innerHTML = compressor.reduction.value;
             break;
         case "releaseSlider":
             setBar(this.id, "release");
-            //compressor.release.value = (this.value / 1000);
+            compressor.release.value = (this.value / 1000);
             document.querySelector("#releaseOutput", "compressor").innerHTML = (this.value - 100) + " sec";
             //document.querySelector("#reductionOutput").innerHTML = compressor.reduction.value;
             break;
     }
 }
+
 
 function changeMiscParameters() {
     switch(this.id) {
@@ -157,18 +185,74 @@ function changeMiscParameters() {
             setBar(this.id, "gain", "misc");
             let gainValue = (this.value / 10);
             document.querySelector("#gainOutput").innerHTML = gainValue + " dB";
-            //gain.gain.value = gainValue;
+            gain.gain.value = gainValue;
             break;
         case "panningSlider":
             setBar(this.id, "panning", "misc");
             let panValue = ((this.value - 50) / 50);
             document.querySelector("#panningOutput").innerHTML = panValue + " LR";
-            //stereoPanner.pan.value = panValue;
+            stereoPanner.pan.value = panValue;
             break;
         case "distortionSlider":
             setBar(this.id, "distortion", "misc");
             document.querySelector("#distortionOutput").innerHTML = this.value;
-            //distortion.curve = makeDistortionCurve(this.value);
+            distortion.curve = makeDistortionCurve(this.value);
             break;
     }
 }
+
+function makeDistortionCurve(amount) {    
+    let n_samples = 44100,
+        curve = new Float32Array(n_samples);
+    
+    for (var i = 0; i < n_samples; ++i ) {
+        var x = i * 2 / n_samples - 1;
+        curve[i] = (Math.PI + amount) * x / (Math.PI + (amount * Math.abs(x)));
+    }
+    return curve;
+};
+
+
+/* Reverb 
+
+for (let i = 0; i < iconButtons.length; i++) {
+    console.log("Miep?")
+    iconButtons[i].addEventListener("click", changeCompressorParameter);
+}
+
+function loadImpulseResponse(name) {
+    fetch("/impulseResponses/" + name + ".wav")
+        .then(response => response.arrayBuffer())
+        .then(undecodedAudio => context.decodeAudioData(undecodedAudio))
+        .then(audioBuffer => {
+            if (convoler) {convoler.disconnect();}
+
+            convoler = context.createConvolver();
+            convoler.buffer = audioBuffer;
+            convoler.normalize = true;
+
+            // Hier wird der Audiograph zusammengebaut
+            source.connect(gain);
+            gain.connect(stereoPanner);
+            // delay.connect(stereoPanner);
+            stereoPanner.connect(compressor);
+            compressor.connect(distortion);
+            //filter.connect(distortion);
+            distortion.connect(convoler);
+            convoler.connect(context.destination);
+        })
+        .catch(console.error);
+}*/
+
+
+playStopButton.addEventListener("click", function() {
+    if (isPlaying) {
+        sound.pause();
+        playStopButton.innerHTML = "Play";
+    } else {
+        playStopButton.innerHTML = "Stop";
+        sound.play();
+    }
+
+    isPlaying = !isPlaying;
+});

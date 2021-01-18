@@ -1,10 +1,9 @@
-// Hilfsvariablen & HTML Elemente
 
-let playStopButton = document.querySelector("#playStopButton");
+
+
 let compressorSliders = document.getElementsByClassName("slider");
 //let filterSliders = document.getElementsByClassName("filterSlider");
 //let filterSelectList = document.querySelector("#filterSelectList");
-let isPlaying = false;
 
 // Web Audio Nodes
 
