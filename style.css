@@ -351,6 +351,10 @@ body {
     background: #d74e09;
 }
 
+.icon:active {
+    background:#f2bb05;
+}
+
 .itemGain {
     grid-area: 5 / 3 / span 2 / span 1;
     /*background-color: #f2bb05;*/
@@ -415,6 +419,29 @@ body {
     height: 25px;
     border: 6px solid #E9EBED;   
     background-color: #427AA1;
+}
+
+#gainSlider::-webkit-slider-thumb {
+    background-color: rgb(70.5, 122.3, 158.9);
+}
+
+#panningSlider::-webkit-slider-thumb {
+    background-color: rgb(88.5, 123.5, 150.5);
+}
+
+#distortionSlider::-webkit-slider-thumb {
+    background-color: rgb(66, 122, 161);
+}
+#gainFill {
+    height: 10%;
+}
+
+#panningFill {
+    height: 50%;
+}
+
+#distortionFill {
+    height: 0%;
 }
 
 .itemGain .slider::-webkit-slider-thumb:hover {
