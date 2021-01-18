@@ -26,7 +26,7 @@ oscillator.start();
 let gain = context.createGain();
 let stereoPanner = context.createStereoPanner();
     //let delay = context.createDelay(4.0);
-let convoler = context.createConvolver();
+let convolver = context.createConvolver();
 let compressor = context.createDynamicsCompressor();
     //let filter = context.createBiquadFilter();
 let distortion = context.createWaveShaper();
@@ -223,7 +223,7 @@ function makeDistortionCurve(amount) {
 };
 
 reverbRoomButton.addEventListener("click", function() {
-    console.log(reverbRoomButton.getAttribute("data-active"));
+    console.log("Same");
     if(reverbRoomButton.getAttribute("data-active") == "false") {
         if (iconButtonActive.localeCompare("room")) {
             console.log("Here");
@@ -237,17 +237,16 @@ reverbRoomButton.addEventListener("click", function() {
 
         if(convolver) {convolver.disconnect();}
 
-            source.disconnect();
+            distortion.disconnect();
 
-            source.connect(convolver);
-            convolver.connect(compressor);
+            distortion.connect(convolver);
+            convolver.connect(gain);
     } 
     else if (reverbRoomButton.getAttribute("data-active") == "true") {
-        console.log("Joh");
         reverbRoomButton.setAttribute("data-active", "false");
         convolver.disconnect();
 
-        source.connect(compressor);
+        distortion.connect(gain);
     }   
 });
 
@@ -263,16 +262,16 @@ reverbChurchButton.addEventListener("click", function() {
         }
         if(convolver) {convolver.disconnect();}
 
-        source.disconnect();
+        distortion.disconnect();
 
-        source.connect(convolver);
-        convolver.connect(compressor);
+        distortion.connect(convolver);
+        convolver.connect(gain);
     } 
     else if (reverbChurchButton.getAttribute("data-active") == "true") {
         reverbChurchButton.setAttribute("data-active", "false");
         convolver.disconnect();
 
-        source.connect(compressor);
+        distortion.connect(gain);
     }   
 });
 
@@ -287,16 +286,16 @@ reverbCaveButton.addEventListener("click", function() {
         }
         if(convolver) {convolver.disconnect();}
 
-            source.disconnect();
+        distortion.disconnect();
 
-            source.connect(convolver);
-            convolver.connect(compressor);
+        distortion.connect(convolver);
+        convolver.connect(gain);
     } 
     else if (reverbCaveButton.getAttribute("data-active") == "true") {
         reverbCaveButton.setAttribute("data-active", "false");
         convolver.disconnect();
 
-        source.connect(compressor);
+        distortion.connect(gain);
     }   
 });
 
@@ -313,16 +312,16 @@ reverbGarageButton.addEventListener("click", function() {
         reverbGarageButton.style.background = [242, 187, 5];
         if(convolver) {convolver.disconnect();}
 
-        source.disconnect();
+        distortion.disconnect();
 
-        source.connect(convolver);
-        convolver.connect(compressor);
-    } 
+        distortion.connect(convolver);
+        convolver.connect(gain);
+    }    
     else if (reverbGarageButton.getAttribute("data-active") == "true") {
         reverbGarageButton.setAttribute("data-active", "false");
         convolver.disconnect();
 
-        source.connect(compressor);
+        distortion.connect(gain);
     }   
 });
 
@@ -360,11 +359,11 @@ function loadImpulseResponse(name) {
         .then(response => response.arrayBuffer())
         .then(undecodedAudio => context.decodeAudioData(undecodedAudio))
         .then(audioBuffer => {
-            if (convoler) {convoler.disconnect();}
+            if (convolver) {convolver.disconnect();}
             
-            convoler = context.createConvolver();
-            convoler.buffer = audioBuffer;
-            convoler.normalize = true;
+            convolver = context.createConvolver();
+            convolver.buffer = audioBuffer;
+            convolver.normalize = true;
 
             // Hier wird der Audiograph zusammengebaut
             oscillator.connect(stereoPanner);
@@ -373,8 +372,8 @@ function loadImpulseResponse(name) {
             stereoPanner.connect(compressor);
             compressor.connect(distortion);
             //filter.connect(distortion);
-            distortion.connect(convoler);
-            convoler.connect(gain);
+            distortion.connect(convolver);
+            convolver.connect(gain);
             gain.connect(context.destination);
         })
         .catch(console.error);

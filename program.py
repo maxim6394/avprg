@@ -23,6 +23,10 @@ def sendControlChange(control, value):
     message = mido.Message('control_change', control=control, value=value)
     midiOutput.send(message)
 
+def sendProgramChange(program, channel):
+    message = mido.Message('program_change', program = program, channel=channel)
+    midiOutput.send(message)
+
 sentOnNotes = []
 
 minFrequency = 500
@@ -73,6 +77,7 @@ while True:
             sendControlChange(1,3)
         elif shape.shapeType == ShapeType.CIRCLE:
             sendControlChange(1,2)
+            sendProgramChange(30,0)
         elif shape.shapeType == ShapeType.TRIANGLE:
             sendControlChange(1,4)
         elif shape.shapeType == ShapeType.RECTANGLE:
