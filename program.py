@@ -63,6 +63,8 @@ def on_trackbar(val):
 
 def on_speed_trackbar(val):
     global timePerLoop
+    if val < 50:
+        val = 50
     timePerLoop = val
 
 cv2.createTrackbar("segments", "image" , 5, 30, on_trackbar)
@@ -73,6 +75,7 @@ def freeDraw(event,x,y,flags,param):
 
     if event == cv2.EVENT_LBUTTONDOWN:
         drawing = True
+        sendNoteOff(0)
         ix,iy = x,y
 
     elif event == cv2.EVENT_MOUSEMOVE:
@@ -87,6 +90,7 @@ def freeDraw(event,x,y,flags,param):
 
     elif event == cv2.EVENT_RBUTTONDOWN:
         erasing = True
+        sendNoteOff(0)
 
     elif event == cv2.EVENT_RBUTTONUP:
         erasing = False
@@ -109,11 +113,10 @@ while True:
         break
 
     ip.resetOutputImage()
-    ip.drawGrid()
 
     if not drawing and not erasing:
         
-        ip.nextSegment()    
+        ip.nextSegment()            
 
         for note in sentOnNotes:        
             sendNoteOff(note)
@@ -129,13 +132,13 @@ while True:
                 sendControlChange(1,4)
             elif shape.shapeType == ShapeType.RECTANGLE:
                 sendControlChange(1,1)            
-            
-           
+                       
             note = int(ip.getRelativeShapePosition(shape) * (72-48)) + 48
             if shape.shapeType != ShapeType.TRIANGLE:
                 sendNoteOn(note)
         # winsound.Beep(int(minFrequency + ip.getRelativeShapePosition(shape) * (maxFrequency - minFrequency)), duration)   
 
+    ip.drawGrid()
 
     cv2.imshow("image", ip.outputImage)
     cv2.imshow("threshold", ip.thresholdImage)
