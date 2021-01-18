@@ -54,8 +54,9 @@ function initialize(){
 				break;
 			case 176:
 				// your function controlChange(controllerNr, value)
-				console.log(event.data[1]);
-				console.log(event.data[2]);
+				//console.log(event.data[1]);
+				//console.log(event.data[2]);
+				controlChange(event.data[2]);
 				break;
 			case 224:
 				// your function pitchBend(LSB, HSB)
