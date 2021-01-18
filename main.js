@@ -256,13 +256,14 @@ function loadImpulseResponse(name) {
 
 function startNote(note) {
     oscillator.frequency.value = allFrequencies[note];
-    gain.value = prevGain;    
+    gain.gain.value = prevGain;    
 }
 
 function stopNote(note) {
     console.log("stopnote "+note);
-    prevGain = gain.value;
-    gain.value = 0;    
+    if(gain.gain.value > 0)
+        prevGain = gain.gain.value;  
+    gain.gain.value = 0;    
 }
 
 function controlChange(controllerNr, value) {
@@ -287,7 +288,6 @@ function controlChange(controllerNr, value) {
 playStopButton.addEventListener("click", function() {
     if (isPlaying) {
         oscillator.stop();
-        gain.value = 0;
         playStopButton.innerHTML = "Play";
     } else {
         oscillator = context.createOscillator();

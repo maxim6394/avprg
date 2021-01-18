@@ -34,7 +34,7 @@ loopsPerImageProcessing = 5
 
 imageHeight = 300
 
-originalImage = cv2.imread("test3.jpg")
+originalImage = cv2.imread("test4.jpg")
 originalSize = originalImage.shape[:2]
 ip = ImageProcessing()
 
@@ -47,40 +47,94 @@ midiOutput = mido.open_output("LoopBe Internal MIDI 1")
 
 #exit()
 
+resizedImage = cv2.resize(originalImage, (round(imageHeight / originalSize[0] * originalSize[1]), imageHeight))
+ip.processImage(resizedImage)
+
+
+drawing = False # true if mouse is pressed
+erasing = False
+ix,iy = -1,-1
+
+cv2.namedWindow('image')
+
+def on_trackbar(val):
+    ip.xSegments = val
+    ip.processImage(ip.image)
+
+def on_speed_trackbar(val):
+    global timePerLoop
+    timePerLoop = val
+
+cv2.createTrackbar("segments", "image" , 5, 30, on_trackbar)
+cv2.createTrackbar("speed", "image" , 200, 500, on_speed_trackbar)
+
+def freeDraw(event,x,y,flags,param):
+    global ix,iy,drawing,erasing
+
+    if event == cv2.EVENT_LBUTTONDOWN:
+        drawing = True
+        ix,iy = x,y
+
+    elif event == cv2.EVENT_MOUSEMOVE:
+        if drawing == True:
+            cv2.circle(ip.image,(x,y),4,(0,0,0),-1)
+        elif erasing == True:
+            cv2.circle(ip.image,(x,y),6,(255,255,255),-1)
+
+    elif event == cv2.EVENT_LBUTTONUP:
+        drawing = False
+        ip.processImage(ip.image)
+
+    elif event == cv2.EVENT_RBUTTONDOWN:
+        erasing = True
+
+    elif event == cv2.EVENT_RBUTTONUP:
+        erasing = False
+        ip.processImage(ip.image)
+
+cv2.setMouseCallback('image',freeDraw)
 while True:
 
-    for note in sentOnNotes:        
-        sendNoteOff(note)
-    sentOnNotes = []    
-
+    
     if loopsSinceImageProcessed == loopsPerImageProcessing:
-        resizedImage = cv2.resize(originalImage, (round(imageHeight / originalSize[0] * originalSize[1]), imageHeight))
-        ip.processImage(resizedImage)
-        loopsSinceImageProcessed = 0
+        ()
+        #resizedImage = cv2.resize(originalImage, (round(imageHeight / originalSize[0] * originalSize[1]), imageHeight))
+        #ip.processImage(resizedImage)
+        #loopsSinceImageProcessed = 0
     else:
-        loopsSinceImageProcessed += 1
+        ()
+        #loopsSinceImageProcessed += 1
 
     if cv2.waitKey(timePerLoop) != -1:
         break
 
     ip.resetOutputImage()
-    ip.nextSegment()    
     ip.drawGrid()
 
-    for shape in ip.getActiveShapes():
-        ()
-        if shape.shapeType == ShapeType.NONE:
-            sendControlChange(1,3)
-        elif shape.shapeType == ShapeType.CIRCLE:
-            sendControlChange(1,2)
-        elif shape.shapeType == ShapeType.TRIANGLE:
-            sendControlChange(1,4)
-        elif shape.shapeType == ShapeType.RECTANGLE:
-            sendControlChange(1,1)            
+    if not drawing and not erasing:
+        
+        ip.nextSegment()    
 
-        note = int(ip.getRelativeShapePosition(shape) * (72-48)) + 48
-        sendNoteOn(note)
-       # winsound.Beep(int(minFrequency + ip.getRelativeShapePosition(shape) * (maxFrequency - minFrequency)), duration)   
+        for note in sentOnNotes:        
+            sendNoteOff(note)
+            sentOnNotes = []  
+            
+        for shape in ip.getActiveShapes():
+            ()
+            if shape.shapeType == ShapeType.NONE:
+                sendControlChange(1,3)
+            elif shape.shapeType == ShapeType.CIRCLE:
+                sendControlChange(1,2)
+            elif shape.shapeType == ShapeType.TRIANGLE:
+                sendControlChange(1,4)
+            elif shape.shapeType == ShapeType.RECTANGLE:
+                sendControlChange(1,1)            
+            
+           
+            note = int(ip.getRelativeShapePosition(shape) * (72-48)) + 48
+            if shape.shapeType != ShapeType.TRIANGLE:
+                sendNoteOn(note)
+        # winsound.Beep(int(minFrequency + ip.getRelativeShapePosition(shape) * (maxFrequency - minFrequency)), duration)   
 
 
     cv2.imshow("image", ip.outputImage)
