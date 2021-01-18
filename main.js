@@ -2,7 +2,12 @@
 
 let playStopButton = document.querySelector("#playStopButton");
 
-let iconButtons = document.querySelectorAll(".icon");
+
+let reverbRoomButton = document.querySelector("#reverbRoom");
+let reverbCaveButton = document.querySelector("#reverbCave");
+let reverbChurchButton = document.querySelector("#reverbChurch");
+let reverbGarageButton = document.querySelector("#reverbGarage");
+let reverbButton = document.querySelector("#reverbOnOffSwitch");
 
 let sliders = document.querySelectorAll(".itemCompressor .slider");
 let miscs = document.querySelectorAll(".itemGain .slider");
@@ -30,6 +35,8 @@ let distortion = context.createWaveShaper();
 distortion.curve = makeDistortionCurve(0);
 distortion.oversample = "4x";
 loadImpulseResponse("room");
+
+let iconButtonActive = "room";
 
 let rgb1 = [242, 187, 5];
 let rgb2 = [215, 78, 9];
@@ -153,27 +160,27 @@ function changeCompressorParameter() {
             //document.querySelector("#reductionOutput").innerHTML = compressor.reduction.value;
             break;
         case "ratioSlider":
-            setBar(this.id, "ratio");
+            setBar(this.id, "ratio", "compressor");
             compressor.ratio.value = (this.value / 5);
-            document.querySelector("#ratioOutput", "compressor").innerHTML = (this.value / 5) + " dB";
+            document.querySelector("#ratioOutput").innerHTML = (this.value / 5) + " dB";
             //document.querySelector("#reductionOutput").innerHTML = compressor.reduction.value;
             break;
         case "kneeSlider":
-            setBar(this.id, "knee");
+            setBar(this.id, "knee", "compressor");
             compressor.knee.value = (this.value / 2.5);
-            document.querySelector("#kneeOutput", "compressor").innerHTML = (this.value / 2.5) + " degree";
+            document.querySelector("#kneeOutput").innerHTML = (this.value / 2.5) + " degree";
             //document.querySelector("#reductionOutput").innerHTML = compressor.reduction.value;
             break;
         case "attackSlider":
-            setBar(this.id, "attack");
+            setBar(this.id, "attack", "compressor");
             compressor.attack.value = (this.value / 1000);
-            document.querySelector("#attackOutput", "compressor").innerHTML = (this.value / 1000) + " sec";
+            document.querySelector("#attackOutput").innerHTML = (this.value / 1000) + " sec";
             //document.querySelector("#reductionOutput").innerHTML = compressor.reduction.value;
             break;
         case "releaseSlider":
-            setBar(this.id, "release");
+            setBar(this.id, "release", "compressor");
             compressor.release.value = (this.value / 1000);
-            document.querySelector("#releaseOutput", "compressor").innerHTML = (this.value - 100) + " sec";
+            document.querySelector("#releaseOutput").innerHTML = (this.value - 100) + " sec";
             //document.querySelector("#reductionOutput").innerHTML = compressor.reduction.value;
             break;
     }
@@ -215,15 +222,140 @@ function makeDistortionCurve(amount) {
     return curve;
 };
 
+reverbRoomButton.addEventListener("click", function() {
+    console.log(reverbRoomButton.getAttribute("data-active"));
+    if(reverbRoomButton.getAttribute("data-active") == "false") {
+        if (iconButtonActive.localeCompare("room")) {
+            console.log("Here");
+            reverbRoomButton.setAttribute("data-active", "true");
+        } else {
+            console.log("Moin");
+            loadImpulseResponse("room");
+            iconButtonActive = "room";
+            reverbRoomButton.setAttribute("data-active", "true");
+        }
+
+        if(convolver) {convolver.disconnect();}
+
+            source.disconnect();
+
+            source.connect(convolver);
+            convolver.connect(compressor);
+    } 
+    else if (reverbRoomButton.getAttribute("data-active") == "true") {
+        console.log("Joh");
+        reverbRoomButton.setAttribute("data-active", "false");
+        convolver.disconnect();
+
+        source.connect(compressor);
+    }   
+});
 
 
+reverbChurchButton.addEventListener("click", function() {
+    if(reverbChurchButton.getAttribute("data-active") == "false") {
+        if (iconButtonActive.localeCompare("church")) {
+            reverbChurchButton.setAttribute("data-active", "true");
+        } else {
+            loadImpulseResponse("church");
+            iconButtonActive = "church";
+            reverbChurchButton.setAttribute("data-active", "true");
+        }
+        if(convolver) {convolver.disconnect();}
 
-for (let i = 0; i < iconButtons.length; i++) {
-    console.log("Miep?")
-    iconButtons[i].addEventListener("click", changeCompressorParameter);
-}
+        source.disconnect();
+
+        source.connect(convolver);
+        convolver.connect(compressor);
+    } 
+    else if (reverbChurchButton.getAttribute("data-active") == "true") {
+        reverbChurchButton.setAttribute("data-active", "false");
+        convolver.disconnect();
+
+        source.connect(compressor);
+    }   
+});
+
+reverbCaveButton.addEventListener("click", function() {
+    if(reverbCaveButton.getAttribute("data-active") == "false") {
+        if (iconButtonActive.localeCompare("cave")) {
+            reverbCaveButton.setAttribute("data-active", "true");
+        } else {
+            loadImpulseResponse("cave");
+            iconButtonActive = "cave";
+            reverbCaveButton.setAttribute("data-active", "true");
+        }
+        if(convolver) {convolver.disconnect();}
+
+            source.disconnect();
+
+            source.connect(convolver);
+            convolver.connect(compressor);
+    } 
+    else if (reverbCaveButton.getAttribute("data-active") == "true") {
+        reverbCaveButton.setAttribute("data-active", "false");
+        convolver.disconnect();
+
+        source.connect(compressor);
+    }   
+});
+
+reverbGarageButton.addEventListener("click", function() {
+    if(reverbGarageButton.getAttribute("data-active") == "false") {
+        if (iconButtonActive.localeCompare("garage")) {
+            reverbGarageButton.setAttribute("data-active", "true");
+        } else {
+            loadImpulseResponse("garage");
+            iconButtonActive = "garage";
+            reverbGarageButton.setAttribute("data-active", "true");
+        }
+
+        reverbGarageButton.style.background = [242, 187, 5];
+        if(convolver) {convolver.disconnect();}
+
+        source.disconnect();
+
+        source.connect(convolver);
+        convolver.connect(compressor);
+    } 
+    else if (reverbGarageButton.getAttribute("data-active") == "true") {
+        reverbGarageButton.setAttribute("data-active", "false");
+        convolver.disconnect();
+
+        source.connect(compressor);
+    }   
+});
+
+/*
+reverbButton.addEventListener("click", function() {
+    console.log(reverbButton.getAttribute("data-active"));
+    if(reverbButton.getAttribute("data-active") == "false") {
+        reverbButton.setAttribute("data-active", "true");
+        //reverbButton.innerHTML = "Turn off"
+
+        if(convolver) {convolver.disconnect();}
+
+        source.disconnect();
+
+        source.connect(convolver);
+        convolver.connect(compressor);
+        //console.log(reverbButton.getAttribute("data-active") + " Hey ");
+    } else if(reverbButton.getAttribute("data-active") == "true") {
+        reverbButton.setAttribute("data-active", "false");
+        //reverbButton.innerHTML = "Turn on"
+
+        //source.disconnect(convolver);
+        //convolver.disconnect(compressor);
+        convolver.disconnect();
+
+        source.connect(compressor);
+        //console.log(reverbButton.getAttribute("data-active") + " Moin ");
+    }
+
+});*/
 
 function loadImpulseResponse(name) {
+    console.log(name);
     fetch("/impulseResponses/" + name + ".wav")
         .then(response => response.arrayBuffer())
         .then(undecodedAudio => context.decodeAudioData(undecodedAudio))
