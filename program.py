@@ -132,7 +132,7 @@ while True:
             
         for shape in ip.getActiveShapes():
             ()
-            if shape.shapeType == ShapeType.NONE:
+            if shape.shapeType == ShapeType.NONE or shape.shapeType == ShapeType.LINE:
                 sendControlChange(1,3)
             elif shape.shapeType == ShapeType.CIRCLE:
                 sendControlChange(1,2)

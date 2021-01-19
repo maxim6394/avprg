@@ -72,5 +72,5 @@ class Shape:
         cv2.rectangle(img, (r[0], r[1]), (r[0]+r[2], r[1]+r[3]), Shape.boundsColor)
 
         #cv2.putText(img, ""+str(self.corners)+"/"+str(self.area)+"px", (self.x,self.y), cv2.FONT_HERSHEY_PLAIN, 1.2, Shape.textColor, 2)
-        cv2.putText(img, ""+self.getShapeName(), (r[0],r[1]), cv2.FONT_HERSHEY_PLAIN, 1.2, Shape.textColor, 2)
+        cv2.putText(img, ""+self.getShapeName(), (r[0],r[1]), cv2.FONT_HERSHEY_PLAIN, 1.2, Shape.textColor, 1)
 
