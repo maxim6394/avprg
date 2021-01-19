@@ -23,8 +23,9 @@ def sendControlChange(control, value):
     message = mido.Message('control_change', control=control, value=value)
     midiOutput.send(message)
 
+
 def sendProgramChange(program, channel):
-    message = mido.Message('program_change', program = program, channel=channel)
+    message = mido.Message('program_change', program=program, channel=channel)
     midiOutput.send(message)
 
 sentOnNotes = []
@@ -127,13 +128,16 @@ while True:
             ()
             if shape.shapeType == ShapeType.NONE:
                 sendControlChange(1,3)
+                sendProgramChange(1,0)
             elif shape.shapeType == ShapeType.CIRCLE:
                 sendControlChange(1,2)
-                sendProgramChange(30,0)
+                sendProgramChange(100,0)
             elif shape.shapeType == ShapeType.TRIANGLE:
                 sendControlChange(1,4)
+                sendProgramChange(50, 0)
             elif shape.shapeType == ShapeType.RECTANGLE:
-                sendControlChange(1,1)            
+                sendControlChange(1,1) 
+                sendProgramChange(66,0)           
             
            
             note = int(ip.getRelativeShapePosition(shape) * (72-48)) + 48

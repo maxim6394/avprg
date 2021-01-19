@@ -42,7 +42,7 @@ function initialize(){
 		//event.data[0] = on (144) / off (128) / controlChange (176)  / pitchBend (224) / ...
 		// event.data[1] = midi note
 		// event.data[2] = velocity
-		console.log(event.data[0])
+		//console.log(event.data[0])
 	
 		switch (event.data[0]) {
 			case 144:
@@ -58,6 +58,12 @@ function initialize(){
 				//console.log(event.data[1]);
 				//console.log(event.data[2]);
 				controlChange(event.data[2]);
+				break;
+			case 192:
+				// your function programChange(program, channel)
+				console.log(event.data[1]);
+				console.log(event.data[2]);
+				programChange(event.data[2]);
 				break;
 			case 224:
 				// your function pitchBend(LSB, HSB)
