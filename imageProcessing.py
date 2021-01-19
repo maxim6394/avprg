@@ -79,14 +79,18 @@ class ImageProcessing:
         self.topLeft = topLeft
         self.bottomRight = bottomRight
         
-        self.cellHeight = round((bottomRight[1] - topLeft[1]) / 10)
+        self.cellHeight = round((bottomRight[1] - topLeft[1]) / 100)
         self.cellWidth = round((bottomRight[0] - topLeft[0]) / self.xSegments)
 
     def drawGrid(self):                
         for x in range(self.topLeft[0], self.bottomRight[0], self.cellWidth):
             cv2.line(self.outputImage, (x, self.topLeft[1]), (x, self.bottomRight[1]), (0))
-        for y in range(self.topLeft[1], self.bottomRight[1], self.cellHeight):
-            cv2.line(self.outputImage, (self.topLeft[0], y), (self.bottomRight[0], y), (0))    
+        #for y in range(self.topLeft[1], self.bottomRight[1], self.cellHeight):
+        #    cv2.line(self.outputImage, (self.topLeft[0], y), (self.bottomRight[0], y), (0))    
+
+        cv2.line(self.outputImage, (self.topLeft[0], self.topLeft[1]), (self.bottomRight[0], self.topLeft[1]), (0))
+        cv2.line(self.outputImage, (self.topLeft[0], self.bottomRight[1]), (self.bottomRight[0], self.bottomRight[1]), (0))    
+
 
         for shape in self.shapes:
             shape.draw(self.outputImage)

@@ -20,7 +20,7 @@ class Shape:
     
     def __init__(self, contour):
         self.contour = contour
-        self.approx = cv2.approxPolyDP(contour, 0.05 * cv2.arcLength(contour, True), True)
+        self.approx = cv2.approxPolyDP(contour, 0.03 * cv2.arcLength(contour, True), True)
         self.corners = len(self.approx)
         self.area = round(cv2.contourArea(self.approx))
         self.boundingRect = cv2.boundingRect(self.approx)

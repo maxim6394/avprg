@@ -411,10 +411,16 @@ function loadImpulseResponse(name) {
         .catch(console.error);
 }
 
+window.setInterval(function()
+{
+    document.getElementById("outputImage").src = "output.jpg?random="+new Date().getTime(); 
+}, 50);
+
 
 function startNote(note) {
     oscillator.frequency.value = allFrequencies[note];
-    gain.gain.value = prevGain;    
+    gain.gain.value = prevGain;
+       
 }
 
 function stopNote(note) {

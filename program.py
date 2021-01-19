@@ -37,7 +37,7 @@ duration = 30
 timePerLoop = 200
 loopsPerImageProcessing = 5
 
-imageHeight = 300
+imageHeight = 400
 
 originalImage = cv2.imread("test4.jpg")
 originalSize = originalImage.shape[:2]
@@ -73,7 +73,7 @@ def on_speed_trackbar(val):
     timePerLoop = val
 
 cv2.createTrackbar("segments", "image" , 5, 30, on_trackbar)
-cv2.createTrackbar("speed", "image" , 200, 500, on_speed_trackbar)
+cv2.createTrackbar("delay", "image" , 200, 500, on_speed_trackbar)
 
 def freeDraw(event,x,y,flags,param):
     global ix,iy,drawing,erasing
@@ -87,7 +87,7 @@ def freeDraw(event,x,y,flags,param):
         if drawing == True:
             cv2.circle(ip.image,(x,y),4,(0,0,0),-1)
         elif erasing == True:
-            cv2.circle(ip.image,(x,y),6,(255,255,255),-1)
+            cv2.circle(ip.image,(x,y),15,(255,255,255),-1)
 
     elif event == cv2.EVENT_LBUTTONUP:
         drawing = False
@@ -107,6 +107,7 @@ while True:
     
     if loopsSinceImageProcessed == loopsPerImageProcessing:
         ()
+        cv2.imwrite('output.jpg', ip.outputImage, [cv2.IMWRITE_JPEG_QUALITY, 90])
         #resizedImage = cv2.resize(originalImage, (round(imageHeight / originalSize[0] * originalSize[1]), imageHeight))
         #ip.processImage(resizedImage)
         #loopsSinceImageProcessed = 0
@@ -114,15 +115,14 @@ while True:
         ()
         #loopsSinceImageProcessed += 1
 
-
-    
     ip.resetOutputImage()
     
-    if cv2.waitKey(timePerLoop) != -1:
-        break
+    
 
     if not drawing and not erasing:
         
+        if cv2.waitKey(timePerLoop) != -1:
+            break
 
         ip.nextSegment()            
 
@@ -134,22 +134,21 @@ while True:
             ()
             if shape.shapeType == ShapeType.NONE:
                 sendControlChange(1,3)
-                sendProgramChange(1,0)
             elif shape.shapeType == ShapeType.CIRCLE:
                 sendControlChange(1,2)
-                sendProgramChange(100,0)
             elif shape.shapeType == ShapeType.TRIANGLE:
                 sendControlChange(1,4)
-                sendProgramChange(50, 0)
             elif shape.shapeType == ShapeType.RECTANGLE:
                 sendControlChange(1,1)            
                        
-            note = int(ip.getRelativeShapePosition(shape) * (72-48)) + 48
+            #note = int(ip.getRelativeShapePosition(shape) * (72-48)) + 48
+            note = int(ip.getRelativeShapePosition(shape) * 128)
             if shape.shapeType != ShapeType.TRIANGLE:
                 sendNoteOn(note)
         # winsound.Beep(int(minFrequency + ip.getRelativeShapePosition(shape) * (maxFrequency - minFrequency)), duration)   
     
-
+    else:
+        cv2.waitKey(10)
 
     ip.drawGrid()
 
