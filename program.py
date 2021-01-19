@@ -76,12 +76,11 @@ cv2.createTrackbar("segments", "image" , 5, 30, on_trackbar)
 cv2.createTrackbar("delay", "image" , 200, 500, on_speed_trackbar)
 
 def freeDraw(event,x,y,flags,param):
-    global ix,iy,drawing,erasing
+    global drawing,erasing
 
     if event == cv2.EVENT_LBUTTONDOWN:
         drawing = True
         sendNoteOff(0)
-        ix,iy = x,y
 
     elif event == cv2.EVENT_MOUSEMOVE:
         if drawing == True:

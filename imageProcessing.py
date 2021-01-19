@@ -74,7 +74,7 @@ class ImageProcessing:
 
         if(topLeft == bottomRight):
             topLeft = (0,0)
-            bottomRight = (ip.width-1, ip.height-1)
+            bottomRight = (self.width-1, self.height-1)
 
         self.topLeft = topLeft
         self.bottomRight = bottomRight
