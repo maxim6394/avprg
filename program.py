@@ -113,13 +113,16 @@ while True:
         ()
         #loopsSinceImageProcessed += 1
 
+
+    
+    ip.resetOutputImage()
+    
     if cv2.waitKey(timePerLoop) != -1:
         break
 
-    ip.resetOutputImage()
-
     if not drawing and not erasing:
         
+
         ip.nextSegment()            
 
         for note in sentOnNotes:        
@@ -142,6 +145,8 @@ while True:
             if shape.shapeType != ShapeType.TRIANGLE:
                 sendNoteOn(note)
         # winsound.Beep(int(minFrequency + ip.getRelativeShapePosition(shape) * (maxFrequency - minFrequency)), duration)   
+    
+
 
     ip.drawGrid()
 
