@@ -300,7 +300,7 @@ body {
 }
 
 .itemReverb {
-    grid-area: 3 / 3 / span 2 / span 1;
+    grid-area: 2 / 3 / span 2 / span 1;
     display: grid; 
     grid-template-columns: repeat(4, minmax(60px, 1fr));
     grid-template-rows: repeat(2, minmax(30px, 1fr));
