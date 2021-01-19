@@ -34,6 +34,10 @@ def sendNoteOff(note, velocity):
 	message = mido.Message('note_off', note=note, velocity=velocity)
 	midiOutput.send(message)
 
+def sendProgramChange(program, channel):
+    message = mido.Message('program_change', program = program, channel=channel)
+    midiOutput.send(message)
+
 # typicalRed =  np.array([175,160, 102])
 typicalRed =  np.array([55,181, 255])
 

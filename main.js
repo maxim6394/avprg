@@ -23,7 +23,7 @@ var prevGain = 1;
 
 let stereoPanner = context.createStereoPanner();
     //let delay = context.createDelay(4.0);
-let convoler = context.createConvolver();
+let convolver = context.createConvolver();
 let compressor = context.createDynamicsCompressor();
     //let filter = context.createBiquadFilter();
 let distortion = context.createWaveShaper();
@@ -217,6 +217,108 @@ function makeDistortionCurve(amount) {
     return curve;
 };
 
+reverbRoomButton.addEventListener("click", function() {
+    console.log("Same");
+    if(reverbRoomButton.getAttribute("data-active") == "false") {
+        if (iconButtonActive.localeCompare("room")) {
+            console.log("Here");
+            reverbRoomButton.setAttribute("data-active", "true");
+        } else {
+            console.log("Moin");
+            loadImpulseResponse("room");
+            iconButtonActive = "room";
+            reverbRoomButton.setAttribute("data-active", "true");
+        }
+
+        if(convolver) {convolver.disconnect();}
+
+            distortion.disconnect();
+
+            distortion.connect(convolver);
+            convolver.connect(gain);
+    } 
+    else if (reverbRoomButton.getAttribute("data-active") == "true") {
+        reverbRoomButton.setAttribute("data-active", "false");
+        convolver.disconnect();
+
+        distortion.connect(gain);
+    }   
+});
+
+
+reverbChurchButton.addEventListener("click", function() {
+    if(reverbChurchButton.getAttribute("data-active") == "false") {
+        if (iconButtonActive.localeCompare("church")) {
+            reverbChurchButton.setAttribute("data-active", "true");
+        } else {
+            loadImpulseResponse("church");
+            iconButtonActive = "church";
+            reverbChurchButton.setAttribute("data-active", "true");
+        }
+        if(convolver) {convolver.disconnect();}
+
+        distortion.disconnect();
+
+        distortion.connect(convolver);
+        convolver.connect(gain);
+    } 
+    else if (reverbChurchButton.getAttribute("data-active") == "true") {
+        reverbChurchButton.setAttribute("data-active", "false");
+        convolver.disconnect();
+
+        distortion.connect(gain);
+    }   
+});
+
+reverbCaveButton.addEventListener("click", function() {
+    if(reverbCaveButton.getAttribute("data-active") == "false") {
+        if (iconButtonActive.localeCompare("cave")) {
+            reverbCaveButton.setAttribute("data-active", "true");
+        } else {
+            loadImpulseResponse("cave");
+            iconButtonActive = "cave";
+            reverbCaveButton.setAttribute("data-active", "true");
+        }
+        if(convolver) {convolver.disconnect();}
+
+        distortion.disconnect();
+
+        distortion.connect(convolver);
+        convolver.connect(gain);
+    } 
+    else if (reverbCaveButton.getAttribute("data-active") == "true") {
+        reverbCaveButton.setAttribute("data-active", "false");
+        convolver.disconnect();
+
+        distortion.connect(gain);
+    }   
+});
+
+reverbGarageButton.addEventListener("click", function() {
+    if(reverbGarageButton.getAttribute("data-active") == "false") {
+        if (iconButtonActive.localeCompare("garage")) {
+            reverbGarageButton.setAttribute("data-active", "true");
+        } else {
+            loadImpulseResponse("garage");
+            iconButtonActive = "garage";
+            reverbGarageButton.setAttribute("data-active", "true");
+        }
+
+        reverbGarageButton.style.background = [242, 187, 5];
+        if(convolver) {convolver.disconnect();}
+
+        distortion.disconnect();
+
+        distortion.connect(convolver);
+        convolver.connect(gain);
+    }    
+    else if (reverbGarageButton.getAttribute("data-active") == "true") {
+        reverbGarageButton.setAttribute("data-active", "false");
+        convolver.disconnect();
+
+        distortion.connect(gain);
+    }   
+});
 
 
 
@@ -233,11 +335,11 @@ function loadImpulseResponse(name) {
         .then(response => response.arrayBuffer())
         .then(undecodedAudio => context.decodeAudioData(undecodedAudio))
         .then(audioBuffer => {
-            if (convoler) {convoler.disconnect();}
+            if (convolver) {convolver.disconnect();}
             
-            convoler = context.createConvolver();
-            convoler.buffer = audioBuffer;
-            convoler.normalize = true;
+            convolver = context.createConvolver();
+            convolver.buffer = audioBuffer;
+            convolver.normalize = true;
 
             // Hier wird der Audiograph zusammengebaut
             oscillator.connect(stereoPanner);
@@ -246,9 +348,9 @@ function loadImpulseResponse(name) {
             stereoPanner.connect(compressor);
             compressor.connect(distortion);
             //filter.connect(distortion);
-            distortion.connect(gain);
-            gain.connect(convoler);
-            convoler.connect(context.destination);
+            distortion.connect(convolver);
+            convolver.connect(gain);
+            gain.connect(context.destination);
         })
         .catch(console.error);
 }

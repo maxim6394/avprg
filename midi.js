@@ -39,9 +39,10 @@ function initialize(){
 
 	function onMIDIMessage(event) {
 		// event.data is an array
-		// event.data[0] = on (144) / off (128) / controlChange (176)  / pitchBend (224) / ...
+		//event.data[0] = on (144) / off (128) / controlChange (176)  / pitchBend (224) / ...
 		// event.data[1] = midi note
 		// event.data[2] = velocity
+		console.log(event.data[0])
 	
 		switch (event.data[0]) {
 			case 144:
