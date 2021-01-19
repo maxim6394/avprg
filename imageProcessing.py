@@ -120,4 +120,4 @@ class ImageProcessing:
 
     def getRelativeShapePosition(self,shape):
         """relative position im grid-bereich zwischen 0 und 1"""
-        return (shape.y - self.topLeft[1]) / (self.bottomRight[1] - self.topLeft[1])
+        return 1 - (shape.y - self.topLeft[1]) / (self.bottomRight[1] - self.topLeft[1])
