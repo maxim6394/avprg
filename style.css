@@ -38,6 +38,7 @@ body {
     grid-template-rows: repeat(7, minmax(100px, 1fr));
     background: #171a21;
     color: #e9ebed;
+    font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
     font-size: 2em;
 
 }
@@ -309,16 +310,18 @@ body {
 
 .itemReverb {
     grid-area: 2 / 3 / span 2 / span 1;
+    /*
     display: grid; 
     grid-template-columns: repeat(4, minmax(60px, 1fr));
     grid-template-rows: repeat(2, minmax(30px, 1fr));
-    /*background-color: #d74e09;*/
+    background-color: #d74e09;
     justify-items: center;
     text-align: center;
     align-items: flex-start;
-    margin: 1vh;
+    margin: 1vh;*/
 }
 
+/*
 #reverbTitle {
     grid-area: 1 / 2 / span 1 / span 2;
     align-self: center;
@@ -345,6 +348,7 @@ body {
     grid-area: 2 / 5 / span 1 / span 1; 
 }*/
 
+/*
 .icon {
     align-self: center;
     min-height: 20%;
@@ -360,7 +364,7 @@ body {
 
 .icon:hover {
     background: #d74e09;
-}
+}*/
 
 /*
 #reverbCave:hover {
@@ -371,7 +375,7 @@ body {
     grid-area: 5 / 3 / span 2 / span 1;
     /*background-color: #f2bb05;*/
     display: grid;
-    grid-template-columns: repeat(3, minmax(60px, 1fr));
+    grid-template-columns: repeat(2, minmax(60px, 1fr));
     grid-template-rows: repeat(3, minmax(60px, 1fr));
     justify-items: center; 
     text-align: center;
@@ -403,6 +407,7 @@ body {
     grid-area: 3 / 2 / span 1 / span 1;  
 }
 
+/*
 #distortionTitle {
     grid-area: 1 / 3 / span 1 / span 1;  
 }
@@ -413,7 +418,7 @@ body {
 
 #distortionOutput {
     grid-area: 3 / 3 / span 1 / span 1;  
-}
+}*/
 
 .itemGain .sliderContainer {
     width: 15px;
@@ -440,10 +445,11 @@ body {
 #panningSlider::-webkit-slider-thumb {
     background-color: rgb(88.5, 123.5, 150.5);
 }
-
+/*
 #distortionSlider::-webkit-slider-thumb {
     background-color: rgb(66, 122, 161);
-}
+}*/
+
 #gainFill {
     height: 10%;
 }
@@ -452,9 +458,10 @@ body {
     height: 50%;
 }
 
+/*
 #distortionFill {
     height: 0%;
-}
+}*/
 
 .itemGain .slider::-webkit-slider-thumb:hover {
     border-color:#d74e09;

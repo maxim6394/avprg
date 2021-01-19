@@ -209,11 +209,12 @@ function changeMiscParameters() {
             stereoPanner.pan.value = panValue;
             console.log(stereoPanner.pan.value);
             break;
+        /*    
         case "distortionSlider":
             setBar(this.id, "distortion", "misc");
             document.querySelector("#distortionOutput").innerHTML = this.value;
             distortion.curve = makeDistortionCurve(this.value);
-            break;
+            break;*/
     }
 }
 
