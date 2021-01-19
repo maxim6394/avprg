@@ -228,6 +228,7 @@ function makeDistortionCurve(amount) {
     return curve;
 };
 
+/*
 reverbRoomButton.addEventListener("click", function() {
     //console.log(currentReverbType);
     if(hasReverb) {
@@ -346,7 +347,7 @@ reverbChurchButton.addEventListener("click", function() {
 
         hasReverb = true;
     }   
-});
+});*/
 
 
 function loadImpulseResponse(name) {
@@ -359,6 +360,7 @@ function loadImpulseResponse(name) {
         .then(audioBuffer => {
             if (convolver) {convolver.disconnect();}
             
+            /*
             hasReverb = true;
             currentReverbType = name;
 
@@ -393,7 +395,7 @@ function loadImpulseResponse(name) {
 
                     reverbGarageButton.style.background = "rgb(242, 187, 5)";
                     break;
-            }
+            }*/
 
             convolver = context.createConvolver();
             convolver.buffer = audioBuffer;
