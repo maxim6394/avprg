@@ -38,6 +38,8 @@ let distortion = context.createWaveShaper();
 let hasReverb = false;
 let currentReverbType = "";
 
+let tempNote;
+
 distortion.curve = makeDistortionCurve(0);
 distortion.oversample = "4x";
 loadImpulseResponse("room");
@@ -424,7 +426,7 @@ function startNote(note) {
 }
 
 function stopNote(note) {
-    console.log("stopnote "+note);
+    console.log("stopnote "+ note);
     if(gain.gain.value > 0)
         prevGain = gain.gain.value;  
     gain.gain.value = 0;    
@@ -433,7 +435,7 @@ function stopNote(note) {
 function controlChange(controllerNr, value) {
     switch(value)     
     {
-        case 1: 
+        case 1:     
             loadImpulseResponse("room");
             break;
         case 2:
@@ -449,7 +451,7 @@ function controlChange(controllerNr, value) {
 }
 
 function programChange(program, channel) {
-    //oscillator.frequency.value = allFrequencies[program];
+    //tempNote = program;
 }
 
 

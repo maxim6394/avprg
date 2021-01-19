@@ -62,8 +62,8 @@ function initialize(){
 			case 192:
 				// your function programChange(program, channel)
 				console.log(event.data[1]);
-				console.log(event.data[2]);
-				programChange(event.data[2]);
+				//console.log(event.data[2]);
+				programChange(event.data[1]);
 				break;
 			case 224:
 				// your function pitchBend(LSB, HSB)
