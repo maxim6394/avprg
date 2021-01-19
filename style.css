@@ -163,6 +163,8 @@ body {
     height: 15vh;
 }
 
+
+/*https://www.youtube.com/watch?v=xVR7bPGKvlY Alle Slider unter diesem Vorbild erstellt*/ 
 .slider {
     position: absolute;
     z-index: 3;
@@ -300,17 +302,17 @@ body {
 .itemReverb {
     grid-area: 3 / 3 / span 2 / span 1;
     display: grid; 
-    grid-template-columns: repeat(5, minmax(60px, 1fr));
+    grid-template-columns: repeat(4, minmax(60px, 1fr));
     grid-template-rows: repeat(2, minmax(30px, 1fr));
     /*background-color: #d74e09;*/
-    justify-content: center;
+    justify-items: center;
     text-align: center;
     align-items: flex-start;
     margin: 1vh;
 }
 
 #reverbTitle {
-    grid-area: 1 / 2 / span 1 / span 3;
+    grid-area: 1 / 2 / span 1 / span 2;
     align-self: center;
 }
 
@@ -330,9 +332,10 @@ body {
     grid-area: 2 / 4 / span 1 / span 1; 
 }
 
+/*
 #reverbOnOffSwitch {
     grid-area: 2 / 5 / span 1 / span 1; 
-}
+}*/
 
 .icon {
     align-self: center;
@@ -351,9 +354,10 @@ body {
     background: #d74e09;
 }
 
-.icon:active {
-    background:#f2bb05;
-}
+/*
+#reverbCave:hover {
+    background:#d74e09;
+}*/
 
 .itemGain {
     grid-area: 5 / 3 / span 2 / span 1;
