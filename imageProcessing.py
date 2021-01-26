@@ -74,7 +74,7 @@ class ImageProcessing:
 
         if(topLeft == bottomRight):
             topLeft = (0,0)
-            bottomRight = (ip.width-1, ip.height-1)
+            bottomRight = (self.width-1, self.height-1)
 
         self.topLeft = topLeft
         self.bottomRight = bottomRight
@@ -90,7 +90,6 @@ class ImageProcessing:
 
         cv2.line(self.outputImage, (self.topLeft[0], self.topLeft[1]), (self.bottomRight[0], self.topLeft[1]), (0))
         cv2.line(self.outputImage, (self.topLeft[0], self.bottomRight[1]), (self.bottomRight[0], self.bottomRight[1]), (0))    
-
 
         for shape in self.shapes:
             shape.draw(self.outputImage)

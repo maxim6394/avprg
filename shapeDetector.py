@@ -63,14 +63,15 @@ class Shape:
 
     def drawActive(self, img):
         r = self.boundingRect
-        cv2.rectangle(img, (r[0], r[1]), (r[0]+r[2], r[1]+r[3]), Shape.activeColor, 2)
+        #cv2.rectangle(img, (r[0], r[1]), (r[0]+r[2], r[1]+r[3]), Shape.activeColor, 2)
+        cv2.drawContours(img, [self.approx], 0, Shape.activeColor, 2)
 
     def draw(self, img): 
-        cv2.drawContours(img, [self.approx], 0, Shape.contourColor, 2)
+        cv2.drawContours(img, [self.approx], 0, Shape.contourColor, 1)
         cv2.drawMarker(img, (self.x, self.y), Shape.centerMarkerColor, cv2.MARKER_CROSS)
         r = self.boundingRect
-        cv2.rectangle(img, (r[0], r[1]), (r[0]+r[2], r[1]+r[3]), Shape.boundsColor)
+       # cv2.rectangle(img, (r[0], r[1]), (r[0]+r[2], r[1]+r[3]), Shape.boundsColor)
 
         #cv2.putText(img, ""+str(self.corners)+"/"+str(self.area)+"px", (self.x,self.y), cv2.FONT_HERSHEY_PLAIN, 1.2, Shape.textColor, 2)
-        cv2.putText(img, ""+self.getShapeName(), (r[0],r[1]), cv2.FONT_HERSHEY_PLAIN, 1.2, Shape.textColor, 2)
+        cv2.putText(img, ""+self.getShapeName(), (r[0],r[1]), cv2.FONT_HERSHEY_PLAIN, 1.2, Shape.textColor, 1)
 

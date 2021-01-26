@@ -440,15 +440,19 @@ function controlChange(controllerNr, value) {
     {
         case 1:     
             loadImpulseResponse("room");
+            distortion.curve = makeDistortionCurve(0);
             break;
         case 2:
-            loadImpulseResponse("cave");
+            loadImpulseResponse("room");
+            distortion.curve = makeDistortionCurve(1);
             break;
         case 3:
-            loadImpulseResponse("garage");
+            loadImpulseResponse("church");
+            distortion.curve = makeDistortionCurve(0);
             break;
         case 4:
             loadImpulseResponse("church");
+            distortion.curve = makeDistortionCurve(1);
             break;
     }
 }
